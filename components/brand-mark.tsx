@@ -16,13 +16,13 @@ export function BrandMark({ href = "/", size = "md" }: BrandMarkProps) {
     <Link href={href} className="inline-flex items-center gap-2 font-black tracking-normal text-foreground">
       <Image
         src="/assets/snapp.png"
-        alt="SnapBox logo"
+        alt="SnappBox logo"
         width={imageSize}
         height={imageSize}
         className="rounded-md"
         priority={size === "md"}
       />
-      <span className={textSize}>SnapBox</span>
+      <span className={textSize}>SnappBox</span>
     </Link>
   )
 }

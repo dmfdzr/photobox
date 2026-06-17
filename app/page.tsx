@@ -21,7 +21,7 @@ function MockPhotobox() {
         ))}
       </div>
       <div className="mt-5 text-center">
-        <p className="text-2xl font-black text-slate-950">SnapBox</p>
+        <p className="text-2xl font-black text-slate-950">SnappBox</p>
         <p className="text-sm font-semibold text-slate-500">Today&apos;s tiny celebration</p>
       </div>
       <span className="absolute -right-5 top-10 rounded-full bg-pink-200 px-4 py-2 text-sm font-black text-pink-900 shadow">PNG</span>

@@ -40,7 +40,7 @@ export function ResultPreview() {
       setError("")
       setSuccess("")
       await downloadPhotobox(session, type)
-      setSuccess(type === "image/png" ? "PNG downloaded as snapbox-result.png." : "JPG downloaded as snapbox-result.jpg.")
+      setSuccess(type === "image/png" ? "PNG downloaded as snappbox-result.png." : "JPG downloaded as snappbox-result.jpg.")
     } catch (downloadError) {
       setError(downloadError instanceof Error ? downloadError.message : "Download failed. Try again.")
     } finally {
@@ -77,7 +77,7 @@ export function ResultPreview() {
           height={layout.height}
           className="max-h-[78vh] max-w-full rounded-lg border bg-white shadow-[0_30px_90px_rgba(15,23,42,0.24)]"
           style={{ aspectRatio: `${layout.width} / ${layout.height}` }}
-          aria-label="SnapBox final photobox preview"
+          aria-label="SnappBox final photobox preview"
         />
       </section>
 

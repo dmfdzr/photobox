@@ -66,7 +66,7 @@ export default function CreatePage() {
 
         <section className="rounded-lg border bg-card p-5 shadow-sm">
           <h2 className="text-xl font-black text-foreground">Choose layout</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Pick this before adding photos so SnapBox knows how many photos to collect.</p>
+          <p className="mt-1 text-sm text-muted-foreground">Pick this before adding photos so SnappBox knows how many photos to collect.</p>
           <div className="mt-4">
             <LayoutSelector />
           </div>

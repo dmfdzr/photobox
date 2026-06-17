@@ -17,7 +17,7 @@ const fontMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "SnapBox",
+  title: "SnappBox",
   description: "Create stylish photobox strips from camera or uploaded photos in minutes.",
   icons: {
     icon: "/assets/snapp.png",

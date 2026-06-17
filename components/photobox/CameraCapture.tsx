@@ -107,7 +107,7 @@ export function CameraCapture() {
         return
       }
 
-      const file = new File([blob], `snapbox-capture-${Date.now()}.jpg`, { type: "image/jpeg" })
+      const file = new File([blob], `snappbox-capture-${Date.now()}.jpg`, { type: "image/jpeg" })
       const result = addFiles([file], "camera")
       setCameraError(result.error)
       setFlash(true)

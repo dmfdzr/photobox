@@ -1,12 +1,12 @@
-# SnapBox
+# SnappBox
 
-SnapBox adalah aplikasi photobox berbasis web untuk membuat hasil foto bergaya photobox secara cepat. Pengguna bisa mengambil foto dari kamera, mengunggah foto dari perangkat, memilih layout, frame, dan filter, lalu menyimpan hasil akhir sebagai gambar.
+SnappBox adalah aplikasi photobox berbasis web untuk membuat hasil foto bergaya photobox secara cepat. Pengguna bisa mengambil foto dari kamera, mengunggah foto dari perangkat, memilih layout, frame, dan filter, lalu menyimpan hasil akhir sebagai gambar.
 
 Aplikasi ini dibuat sebagai pengalaman yang ringan dan langsung pakai. Tidak ada login, akun, dashboard admin, pembayaran, galeri online, atau proses setup panjang sebelum user bisa mulai membuat photobox.
 
 ## Fitur Utama
 
-- Landing page dengan branding SnapBox dan CTA `Start Creating`.
+- Landing page dengan branding SnappBox dan CTA `Start Creating`.
 - Flow pembuatan bertahap melalui `/create`, `/camera`, `/upload`, dan `/preview`.
 - Pilihan input foto dari kamera atau upload perangkat.
 - Kamera dengan countdown 3 detik, capture manual, flash effect, retake, progress foto, dan toggle kamera depan/belakang.
@@ -74,7 +74,7 @@ Catatan: project tetap memakai `.tsx` dan `.ts` sesuai keputusan implementasi sa
 
 ## Arsitektur Singkat
 
-SnapBox bersifat frontend-only. Foto tidak dikirim ke backend dan tidak disimpan di database. Semua proses foto, preview, dan export dilakukan di sisi browser.
+SnappBox bersifat frontend-only. Foto tidak dikirim ke backend dan tidak disimpan di database. Semua proses foto, preview, dan export dilakukan di sisi browser.
 
 State aplikasi dikelola oleh `PhotoboxProvider`. Foto disimpan sementara sebagai object URL di memory browser, sedangkan pilihan ringan seperti layout, frame, filter, input method, dan step disimpan di `sessionStorage`.
 
@@ -126,7 +126,7 @@ Konfigurasi utama ada di `components/photobox/config.ts`:
 - `FILTERS`: filter CSS dan canvas.
 - `DEFAULT_SESSION`: state awal aplikasi.
 
-Renderer hasil akhir ada di `components/photobox/canvas.ts`. File ini menggambar frame, slot foto, filter, tanggal, label SnapBox, dan melakukan export PNG/JPG.
+Renderer hasil akhir ada di `components/photobox/canvas.ts`. File ini menggambar frame, slot foto, filter, tanggal, label SnappBox, dan melakukan export PNG/JPG.
 
 ## Privacy Model
 
@@ -179,7 +179,7 @@ npm run build
 
 ## Batasan MVP
 
-SnapBox saat ini tidak mencakup:
+SnappBox saat ini tidak mencakup:
 
 - Login/register.
 - Backend API.
@@ -198,5 +198,5 @@ Fitur kamera membutuhkan HTTPS di production agar permission kamera bekerja deng
 ## Commit Message
 
 ```txt
-docs: document SnapBox app usage and architecture
+chore: rename app branding to SnappBox
 ```

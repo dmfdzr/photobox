@@ -138,7 +138,7 @@ export async function drawPhotobox(canvas: HTMLCanvasElement | null, session: Ph
   ctx.fillStyle = frame.textColor
   ctx.textAlign = "center"
   ctx.font = `800 ${Math.max(24, layout.width * 0.045)}px sans-serif`
-  ctx.fillText("SnapBox", layout.width / 2, labelY)
+  ctx.fillText("SnappBox", layout.width / 2, labelY)
   ctx.globalAlpha = 0.68
   ctx.font = `600 ${Math.max(14, layout.width * 0.022)}px sans-serif`
   ctx.fillText(new Intl.DateTimeFormat("en", { month: "short", day: "2-digit", year: "numeric" }).format(new Date()), layout.width / 2, labelY + 34)
@@ -161,7 +161,7 @@ export async function downloadPhotobox(session: PhotoboxSession, type: "image/pn
   const url = URL.createObjectURL(blob)
   const link = document.createElement("a")
   link.href = url
-  link.download = type === "image/png" ? "snapbox-result.png" : "snapbox-result.jpg"
+  link.download = type === "image/png" ? "snappbox-result.png" : "snappbox-result.jpg"
   link.click()
   URL.revokeObjectURL(url)
 }

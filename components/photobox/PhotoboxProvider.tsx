@@ -32,7 +32,8 @@ type PhotoboxContextValue = {
   resetSession: () => void
 }
 
-const STORAGE_KEY = "snapbox-session-v1"
+const STORAGE_KEY = "snappbox-session-v1"
+const LEGACY_STORAGE_KEY = "snapbox-session-v1"
 const PhotoboxContext = React.createContext<PhotoboxContextValue | null>(null)
 
 function revokePhoto(photo: PhotoItem) {
@@ -55,7 +56,7 @@ function createPhoto(file: File, source: PhotoSource, position: number): PhotoIt
 
 function getStoredSession(): PhotoboxSession {
   try {
-    const stored = window.sessionStorage.getItem(STORAGE_KEY)
+    const stored = window.sessionStorage.getItem(STORAGE_KEY) ?? window.sessionStorage.getItem(LEGACY_STORAGE_KEY)
     if (!stored) return DEFAULT_SESSION
     const parsed = JSON.parse(stored) as Partial<PhotoboxSession>
 
@@ -230,6 +231,7 @@ export function PhotoboxProvider({ children }: { children: React.ReactNode }) {
       return DEFAULT_SESSION
     })
     window.sessionStorage.removeItem(STORAGE_KEY)
+    window.sessionStorage.removeItem(LEGACY_STORAGE_KEY)
   }, [])
 
   const value = React.useMemo<PhotoboxContextValue>(() => ({

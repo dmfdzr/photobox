@@ -52,7 +52,7 @@ export function UploadPhotoManager() {
             <ImagePlus className="size-7" />
           </div>
           <h1 className="text-3xl font-black text-foreground">Upload your photos</h1>
-          <p className="mx-auto mt-2 max-w-md text-muted-foreground">Drop JPG, PNG, or WebP files here. SnapBox only needs {requiredPhotoCount} photo{requiredPhotoCount > 1 ? "s" : ""} for this layout.</p>
+          <p className="mx-auto mt-2 max-w-md text-muted-foreground">Drop JPG, PNG, or WebP files here. SnappBox only needs {requiredPhotoCount} photo{requiredPhotoCount > 1 ? "s" : ""} for this layout.</p>
           <Button className="mt-5" size="lg" type="button">
             <Upload />
             Browse files
