@@ -1,58 +1,143 @@
-# Virtual Photobox
+# SnapBox
 
-Virtual Photobox is a frontend-only photo booth composer built with Next.js. It lets users capture or upload local photos, arrange them into a styled photobox frame, customize the result, and export the final image from the browser.
+SnapBox adalah aplikasi photobox berbasis web untuk membuat hasil foto bergaya photobox secara cepat. Pengguna bisa mengambil foto dari kamera, mengunggah foto dari perangkat, memilih layout, frame, dan filter, lalu menyimpan hasil akhir sebagai gambar.
 
-The current MVP is intentionally local-first: no live rooms, no accounts, no database, and no server-side photo storage. This keeps privacy and delivery speed high while validating the core creation workflow before adding realtime infrastructure.
+Aplikasi ini dibuat sebagai pengalaman yang ringan dan langsung pakai. Tidak ada login, akun, dashboard admin, pembayaran, galeri online, atau proses setup panjang sebelum user bisa mulai membuat photobox.
 
-## Features
+## Fitur Utama
 
-- Local camera capture through the browser camera API.
-- Local image upload and drag-and-drop input.
-- Photo slots for 2-4 images.
-- Layouts for duo strip, triple stack, quad grid, and classic strip.
-- Per-photo crop controls: horizontal position, vertical position, and zoom.
-- Frame themes: Soft Pop, Midnight Flash, and Paper Strip.
-- Filter presets: Clean, Warm, Flash, and Mono.
-- Caption text with custom X/Y positioning.
-- Optional date text.
-- Sticker accents with placement controls.
-- Client-side PNG/JPEG export.
-- Browser-native share action when supported, with download as fallback.
+- Landing page dengan branding SnapBox dan CTA `Start Creating`.
+- Flow pembuatan bertahap melalui `/create`, `/camera`, `/upload`, dan `/preview`.
+- Pilihan input foto dari kamera atau upload perangkat.
+- Kamera dengan countdown 3 detik, capture manual, flash effect, retake, progress foto, dan toggle kamera depan/belakang.
+- Kamera otomatis mati setelah sesi foto sesuai layout selesai.
+- Upload JPG, PNG, dan WebP dengan validasi ukuran file.
+- Preview foto, remove, replace, dan crop controls.
+- Crop controls untuk horizontal, vertical, dan zoom pada camera dan upload flow.
+- Pilihan layout: Single Photo, Classic Strip, Grid 2x2, dan Double Frame.
+- Pilihan frame: Minimal White, Soft Cream, Pastel Pink, Sky Blue, Dark Elegant, dan Green Fresh.
+- Pilihan filter: Normal, Black & White, Warm, Cool, Vintage, dan Soft Contrast.
+- Preview final sebelum download.
+- Download hasil sebagai PNG atau JPG.
+- Dark mode dan light mode dengan toggle di landing page dan semua halaman aplikasi.
+- Logo dan favicon menggunakan `public/assets/snapp.png`.
 
-## Privacy Model
+## User Flow
 
-Photos are processed locally in the browser. The app does not upload user photos, does not store photos in a database, and does not create user accounts or galleries.
+### Take Photo
 
-Object URLs are used for local previews and revoked when photos are removed or the session is reset. Export only happens after an explicit user action.
+1. User membuka landing page.
+2. User klik `Start Creating`.
+3. User memilih `Take Photo`.
+4. User memilih layout, frame awal, dan filter awal.
+5. User masuk ke halaman kamera.
+6. User mengambil foto sesuai jumlah yang dibutuhkan layout.
+7. Kamera otomatis mati setelah sesi foto selesai.
+8. User bisa retake atau mengatur crop foto.
+9. User lanjut ke halaman preview.
+10. User menyesuaikan layout, frame, atau filter.
+11. User download hasil akhir.
+
+### Upload Photo
+
+1. User membuka landing page.
+2. User klik `Start Creating`.
+3. User memilih `Upload Photo`.
+4. User memilih layout, frame awal, dan filter awal.
+5. User upload foto sesuai jumlah layout.
+6. User bisa remove, replace, dan mengatur crop foto.
+7. User lanjut ke halaman preview.
+8. User menyesuaikan layout, frame, atau filter.
+9. User download hasil akhir.
+
+## Halaman Aplikasi
+
+```txt
+/          Landing page
+/create    Pilih input method, layout, frame, dan filter awal
+/camera    Ambil foto dari kamera
+/upload    Upload foto dari perangkat
+/preview   Preview final dan download
+```
 
 ## Tech Stack
 
-- Next.js 16.2.6
+- Next.js 16.2.6 App Router
 - React 19.2.4
 - TypeScript
 - Tailwind CSS 4
-- shadcn/ui
-- Radix UI
+- shadcn/ui button
 - Lucide React
+- Browser APIs: MediaDevices, File, Canvas
 
-## Project Structure
+Catatan: project tetap memakai `.tsx` dan `.ts` sesuai keputusan implementasi saat ini.
+
+## Arsitektur Singkat
+
+SnapBox bersifat frontend-only. Foto tidak dikirim ke backend dan tidak disimpan di database. Semua proses foto, preview, dan export dilakukan di sisi browser.
+
+State aplikasi dikelola oleh `PhotoboxProvider`. Foto disimpan sementara sebagai object URL di memory browser, sedangkan pilihan ringan seperti layout, frame, filter, input method, dan step disimpan di `sessionStorage`.
+
+Keputusan ini menjaga aplikasi tetap cepat dan sederhana. Trade-off-nya: foto tidak bersifat permanen. Jika user refresh atau menutup tab, foto aktif bisa hilang. Karena itu aplikasi menampilkan warning sebelum reload saat sudah ada foto aktif.
+
+## Struktur Project
 
 ```txt
 app/
-  layout.tsx
-  page.tsx
+  layout.tsx          Root layout, metadata, providers, theme wrapper
+  page.tsx            Landing page
+  create/page.tsx     Setup input method, layout, frame, filter
+  camera/page.tsx     Camera route
+  upload/page.tsx     Upload route
+  preview/page.tsx    Final preview route
+  favicon.ico         Favicon dari snapp.png
+  icon.png            App icon dari snapp.png
+
 components/
+  brand-mark.tsx      Logo + brand reusable component
+  theme-provider.tsx  Light/dark theme state
+  theme-toggle.tsx    Theme toggle button
   photobox/
-    PhotoboxApp.tsx   # Main creator UI and state orchestration
-    canvas.ts         # Deterministic canvas renderer and export helpers
-    config.ts         # Layouts, themes, filters, stickers, export presets
+    CameraCapture.tsx       Camera capture UI and controls
+    PhotoboxProvider.tsx    Shared photobox session state
+    ResultPreview.tsx       Final preview and download controls
+    Selectors.tsx           Layout, frame, and filter selectors
+    StepIndicator.tsx       Creation step indicator
+    UploadPhotoManager.tsx  Upload, preview, replace, remove, crop
+    canvas.ts               Canvas renderer and download helper
+    config.ts               Layout, frame, filter, and data config
   ui/
     button.tsx
+
 lib/
   utils.ts
+
+public/
+  assets/
+    snapp.png         Logo source
 ```
 
-## Running Locally
+## Data Konfigurasi
+
+Konfigurasi utama ada di `components/photobox/config.ts`:
+
+- `LAYOUTS`: jumlah foto, ukuran output, dan posisi slot foto.
+- `FRAMES`: warna background, border, text, accent, dan radius.
+- `FILTERS`: filter CSS dan canvas.
+- `DEFAULT_SESSION`: state awal aplikasi.
+
+Renderer hasil akhir ada di `components/photobox/canvas.ts`. File ini menggambar frame, slot foto, filter, tanggal, label SnapBox, dan melakukan export PNG/JPG.
+
+## Privacy Model
+
+- Foto diproses di perangkat user.
+- Foto tidak di-upload ke server.
+- Foto tidak disimpan di database.
+- Object URL di-revoke saat foto dihapus, diganti, reset, atau saat app unmount.
+- Settings ringan disimpan sementara di `sessionStorage`.
+- Tidak ada login atau data akun.
+
+## Menjalankan Project
 
 Install dependencies:
 
@@ -60,67 +145,58 @@ Install dependencies:
 npm install
 ```
 
-Run the development server:
+Jalankan development server:
 
 ```bash
 npm run dev
 ```
 
-Open:
+Buka:
 
 ```txt
 http://localhost:3000
 ```
 
-## Verification
+## Verifikasi
 
-Run lint:
+Lint:
 
 ```bash
 npm run lint
 ```
 
-Run TypeScript checks:
+Typecheck:
 
 ```bash
 npm run typecheck
 ```
 
-Run a production build:
+Production build:
 
 ```bash
 npm run build
 ```
 
-## Current Scope
+## Batasan MVP
 
-Phase 1 focuses on the frontend-only MVP:
+SnapBox saat ini tidak mencakup:
 
-- Local camera capture.
-- Local upload.
-- 2-4 photo layouts.
-- Styled frame themes.
-- Caption, date, sticker, and filter controls.
-- Client-side export.
-- No database, no live room, no server photo storage.
+- Login/register.
+- Backend API.
+- Database.
+- Cloud storage.
+- Online gallery.
+- Share link online.
+- Payment.
+- Admin dashboard.
+- Auto print.
 
-## Non-Goals
+## Catatan Deployment
 
-- No realtime participant sync.
-- No database-backed photo storage.
-- No accounts or saved gallery.
-- No AI background removal or generative compositing.
-- No server-side image rendering.
-- No payments, event admin, or campaign tooling.
+Fitur kamera membutuhkan HTTPS di production agar permission kamera bekerja dengan benar di browser modern. Deploy ke platform seperti Vercel sudah memenuhi kebutuhan ini secara default.
 
-## Roadmap
+## Commit Message
 
-Phase 2 can add guided remote collaboration without storing photos: improved copy prompts, bulk import helpers, preset templates, and optional local-only drafts.
-
-Phase 3 can explore live rooms with ephemeral signaling while preserving the rule that final photos are not stored in a database.
-
-## Trade-Offs
-
-The frontend-only approach is fast, private, and operationally simple. The trade-off is that remote collaboration remains manual and users cannot recover a composition after closing the browser unless an explicit local draft feature is added later.
-
-Client-side canvas export avoids server cost and prevents server-side photo exposure. The trade-off is that export work runs on the user's device, so image counts and export sizes should stay bounded for low-end browsers.
+```txt
+docs: document SnapBox app usage and architecture
+```
